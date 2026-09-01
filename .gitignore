@@ -1,0 +1,12 @@
+# WorkBuddy project data (not for public repo)
+.workbuddy/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Local env
+.env
+.env.local
