@@ -1722,4 +1722,26 @@
   render();
 })();
 
+// 返回顶部浮动按钮（独立逻辑，不依赖上方 IIFE）
+(function () {
+  var btn = document.getElementById("toTop");
+  if (!btn) return;
+  var ticking = false;
+  function update() {
+    ticking = false;
+    btn.classList.toggle("show", window.scrollY > 360);
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  btn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  update();
+})();
+
   

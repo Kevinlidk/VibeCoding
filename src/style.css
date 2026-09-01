@@ -507,4 +507,27 @@
     .page-n { display: flex; gap: 4px; }
     .page-n button { min-width: 24px; height: 24px; border: 1px solid var(--line); background: transparent; color: var(--text); }
     .page-n button.on { border-color: var(--info); color: var(--info); }
+
+    /* 返回顶部浮动按钮 */
+    .to-top {
+      position: fixed; right: 16px; bottom: 16px; z-index: 30;
+      display: flex; flex-direction: row; align-items: center; justify-content: center;
+      gap: normal; width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line-2);
+      background: var(--card); color: var(--text);
+      box-shadow: var(--shadow);
+      opacity: 0; visibility: hidden; transform: translateY(8px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s, color .15s, border-color .15s, background .15s;
+    }
+    .to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .to-top:hover { color: var(--accent); border-color: var(--accent); background: var(--fill); }
+    .to-top:focus-visible { outline: none; color: var(--accent); border-color: var(--accent); }
+    @media (prefers-reduced-motion: reduce) {
+      .to-top { transition: opacity .18s ease, visibility .18s; transform: none; }
+      .to-top.show { transform: none; }
+    }
+    @media (max-width: 520px) {
+      .to-top { right: 12px; bottom: 12px; }
+    }
   
