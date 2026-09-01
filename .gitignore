@@ -16,3 +16,6 @@ node_modules/
 dist/
 .wrangler/
 *.local
+
+# Local dry-run / temp output
+tmp/

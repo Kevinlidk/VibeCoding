@@ -90,6 +90,18 @@ npm run deploy             # = npm run build && wrangler deploy
 > 想用 Cloudflare Pages 更简单：`Build command = npm run build`、`Build output = dist`，
 > Pages 会自动读取 `public/_headers`（无需 `worker/index.js`）。
 
+### 自动化部署（GitHub Actions）
+
+仓库已包含 `.github/workflows/deploy.yml`：每次 push 到 `main` 会自动执行
+`npm ci → npm run build → wrangler deploy`，无需本地手动部署。
+
+你只需在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中添加两个 Repository Secret：
+
+- `CF_API_TOKEN`：Cloudflare API Token，权限需包含 `Workers:Edit`（自定义 token 时勾选 Account 下的 Workers 相关权限）。
+- `CF_ACCOUNT_ID`：Cloudflare 账户 ID（Dashboard 右下角获取）。
+
+配置好后，任何推送到 `main` 的提交都会自动上线，并自动带上「`/assets/*` 长效缓存 + `index.html` 不缓存」策略。
+
 ## 项目结构
 
 VibeCoding/
