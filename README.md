@@ -90,19 +90,13 @@ npm run deploy             # = npm run build && wrangler deploy
 > 想用 Cloudflare Pages 更简单：`Build command = npm run build`、`Build output = dist`，
 > Pages 会自动读取 `public/_headers`（无需 `worker/index.js`）。
 
-### 自动化部署（GitHub Actions）
+### 自动化部署（Cloudflare Git integration）
 
-仓库已包含 `.github/workflows/deploy.yml`：每次 push 到 `main` 会自动执行
-`npm ci → npm run build → wrangler deploy`，无需本地手动部署。
+本仓库**不再包含 GitHub Actions 工作流**，自动部署由 Cloudflare Workers 控制台的 **Git integration** 完成：
 
-> **注意**：如果你在 Cloudflare Workers 控制台里已经启用了 **Git integration**（把 GitHub 仓库直接连到 Workers，由 Cloudflare 监听 push 并自动构建部署），那确实不需要在 GitHub 仓库里配 Secrets，也不需要本 GitHub Actions 工作流。下面的 Secret 只针对「用 GitHub Actions 调用 wrangler 部署」这条路。
-
-如果你选择走 GitHub Actions，需在仓库 **Settings → Secrets and variables → Actions** 中添加两个 Repository Secret：
-
-- `CF_API_TOKEN`：Cloudflare API Token，权限需包含 `Workers:Edit`（自定义 token 时勾选 Account 下的 Workers 相关权限）。
-- `CF_ACCOUNT_ID`：Cloudflare 账户 ID（Dashboard 右下角获取）。
-
-配置好后，任何推送到 `main` 的提交都会自动上线，并自动带上「`/assets/*` 长效缓存 + `index.html` 不缓存」策略。
+- 在 Cloudflare Workers 控制台把本 GitHub 仓库关联后，Cloudflare 会自动监听 `main` 分支的 push，自动执行 `npm install → npm run build → wrangler deploy`。
+- 不需要在 GitHub 仓库 **Settings → Secrets** 里配置 `CF_API_TOKEN` / `CF_ACCOUNT_ID`；Cloudflare 通过 OAuth/Git 集成获取必要权限。
+- 如果你更想用 GitHub Actions，可自行重新创建 `.github/workflows/deploy.yml`，并在 GitHub Secrets 中配置 `CF_API_TOKEN`（权限 `Workers:Edit`）和 `CF_ACCOUNT_ID`。
 
 ### 从旧版迁移到本 Vite 构建
 
