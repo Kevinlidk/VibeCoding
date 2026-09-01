@@ -102,6 +102,21 @@ npm run deploy             # = npm run build && wrangler deploy
 
 配置好后，任何推送到 `main` 的提交都会自动上线，并自动带上「`/assets/*` 长效缓存 + `index.html` 不缓存」策略。
 
+### 从旧版迁移到本 Vite 构建
+
+旧站是「单文件内联 CSS/JS」的静态托管；新架构必须托管构建产物 `dist/`（由 Worker 完成）。迁移要点：
+
+- 在 Cloudflare 把 `vibecoding.kevinlidk.cn` 绑定为该 Worker 的 **Custom Domain** 后，该域名的流量即由 Worker 接管，无需再保留旧静态源。
+- 若 `kevinlidk.cn` 当前由其他源（旧 Pages / 静态托管）提供，绑定 Custom Domain 会把它切到 Worker；前提是 DNS 已由 Cloudflare 管理（橙色云朵）。
+- 部署后用下面命令验证缓存策略是否真正生效：
+
+```bash
+curl -sI https://vibecoding.kevinlidk.cn/                # 期望 Cache-Control: no-cache
+curl -sI https://vibecoding.kevinlidk.cn/assets/index.BXTP7vPp.js  # 期望 Cache-Control: public, max-age=31536000, immutable
+```
+
+若 `index.html` 仍返回 `max-age=0` 或页面仍是内联样式，说明流量还没走到新 Worker，请检查 Custom Domain 绑定与 DNS。
+
 ## 项目结构
 
 VibeCoding/
