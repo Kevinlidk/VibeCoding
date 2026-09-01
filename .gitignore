@@ -10,3 +10,8 @@ Thumbs.db
 # Local env
 .env
 .env.local
+
+# Node / Vite
+node_modules/
+dist/
+*.local

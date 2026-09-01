@@ -19,24 +19,51 @@ https://vibecoding.kevinlidk.cn
 
 ## 技术说明
 
-- 纯静态单页：仅 `index.html`，内联 CSS 与 JS，无构建步骤、无外部依赖。
-- 直接双击 `index.html` 即可在浏览器打开，或部署到任意静态托管服务。
+- **Vite 工程化**：结构（HTML）、样式（CSS）、行为（JS）三者分离，便于团队协作与维护。
+  - `index.html` — 页面结构（入口，引用 `/src/main.js`）。
+  - `src/style.css` — 全部样式。
+  - `src/app.js` — 全部交互逻辑（原内联脚本提取而来）。
+  - `src/main.js` — 装配入口，引入样式与行为。
+- **零运行时依赖**：页面本身不依赖任何第三方库，构建后仍是纯静态资源。
+- **构建产物可缓存**：`npm run build` 输出的 `style.css` / `app.js` 使用内容哈希文件名，可长期缓存在用户浏览器；后续访问仅重新下载体积很小的 `index.html`。
 
 ## 本地预览
 
 ```bash
-# 任选其一
-open index.html                # macOS
-start index.html              # Windows
-python3 -m http.server 8080   # 然后访问 http://localhost:8080
+# 开发模式（热更新）
+npm install
+npm run dev
+
+# 生产构建（输出到 dist/）
+npm run build
+
+# 本地预览构建产物
+npm run preview
 ```
+
+也可不构建直接查看源码结构：用任意静态服务器打开仓库根目录即可。
+
+## 构建与缓存策略
+
+- **内容哈希命名**：构建产物形如 `assets/index.a1b2c3.css` / `assets/index.d4e5f6.js`。内容不变 → 文件名不变 → 命中浏览器缓存。
+- **并行下载**：构建后 `index.html` 内同时出现 `<link rel="stylesheet">` 与 `<script type="module">`，浏览器解析 HTML 时并行请求 CSS 与 JS，互不阻塞。
+- **部署建议（缓存头）**：静态服务器 / CDN 对带哈希的 `assets/*` 设置长效缓存
+  `Cache-Control: public, max-age=31536000, immutable`；
+  对 `index.html` 设置较短缓存或 `no-cache`，保证内容更新可被及时拉取。
 
 ## 项目结构
 
 ```
 VibeCoding/
-├── index.html   # 全部内容（结构 + 样式 + 数据 + 交互）
-└── README.md    # 本文件
+├── index.html        # 页面结构（入口，引用 /src/main.js）
+├── package.json      # 依赖与脚本（dev / build / preview）
+├── vite.config.js    # Vite 配置（内容哈希、CSS 代码分割、相对 base）
+├── src/
+│   ├── main.js       # 装配入口：引入 style.css 与 app.js
+│   ├── style.css     # 全部样式
+│   └── app.js        # 全部交互逻辑（原内联脚本）
+├── dist/             # 生产构建产物（npm run build 生成，已 gitignore）
+└── README.md         # 本文件
 ```
 
 ## 许可证
