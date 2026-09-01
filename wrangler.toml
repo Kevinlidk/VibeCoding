@@ -1,0 +1,10 @@
+name = "vibecoding-ui-dict"
+main = "worker/index.js"
+compatibility_date = "2024-09-23"
+
+# 用 Cloudflare Workers Static Assets 直接托管 Vite 构建产物 dist/
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# 未匹配到文件时回退到 index.html（单页应用友好；本项目仅一个页面，无副作用）
+not_found_handling = "single-page-application"
