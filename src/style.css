@@ -131,6 +131,17 @@
       display: flex; flex-direction: column; gap: 8px;
       padding: 0 32px; border: 0; background: transparent;
     }
+    .top-actions {
+      display: flex; align-items: center; gap: 10px; flex: 0 0 auto;
+    }
+    .github-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: transparent; color: var(--muted);
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .github-link:hover { color: var(--accent); border-color: var(--accent); background: var(--fill); }
+    .github-link svg { width: 18px; height: 18px; display: block; }
     .theme-switch {
       display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius);
       overflow: hidden; flex: 0 0 auto;
@@ -180,7 +191,7 @@
       html { -webkit-text-size-adjust: 100%; }
       .shell { padding: 10px 12px 32px; }
       .top { flex-direction: column; gap: 10px; }
-      .theme-switch { align-self: flex-start; }
+      .top-actions { align-self: flex-start; }
       .hero h1.wordmark { font-size: 18px; gap: 8px 12px; }
       .hero p, .formula { font-size: 11px; }
       .toolbar { max-width: none; }
