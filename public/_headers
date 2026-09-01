@@ -1,0 +1,8 @@
+# 静态资源缓存策略（Netlify / Cloudflare Pages 原生支持）
+# 带内容哈希的 assets/* 长期缓存：内容不变 → 文件名不变 → 浏览器直接命中本地缓存。
+# 仅 index.html 不缓存，保证内容更新可被及时拉取。
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/index.html
+  Cache-Control: no-cache

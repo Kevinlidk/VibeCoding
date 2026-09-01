@@ -50,6 +50,20 @@ npm run preview
 - **部署建议（缓存头）**：静态服务器 / CDN 对带哈希的 `assets/*` 设置长效缓存
   `Cache-Control: public, max-age=31536000, immutable`；
   对 `index.html` 设置较短缓存或 `no-cache`，保证内容更新可被及时拉取。
+- **开箱即用配置**：仓库根 `public/_headers` 已按上述策略写好，执行 `npm run build` 后会自动复制到 `dist/_headers`，
+  直接适配 **Netlify / Cloudflare Pages**。其他托管（如 nginx / Apache）请按同策略自行配置（见下）。
+
+**其他托管示例（nginx）**：
+
+```nginx
+# 在 server 块内
+location /assets/ {
+  add_header Cache-Control "public, max-age=31536000, immutable";
+}
+location = /index.html {
+  add_header Cache-Control "no-cache";
+}
+```
 
 ## 项目结构
 
