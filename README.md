@@ -90,14 +90,6 @@ npm run deploy             # = npm run build && wrangler deploy
 > 想用 Cloudflare Pages 更简单：`Build command = npm run build`、`Build output = dist`，
 > Pages 会自动读取 `public/_headers`（无需 `worker/index.js`）。
 
-### 自动化部署（Cloudflare Git integration）
-
-本仓库**不再包含 GitHub Actions 工作流**，自动部署由 Cloudflare Workers 控制台的 **Git integration** 完成：
-
-- 在 Cloudflare Workers 控制台把本 GitHub 仓库关联后，Cloudflare 会自动监听 `main` 分支的 push，自动执行 `npm install → npm run build → wrangler deploy`。
-- 不需要在 GitHub 仓库 **Settings → Secrets** 里配置 `CF_API_TOKEN` / `CF_ACCOUNT_ID`；Cloudflare 通过 OAuth/Git 集成获取必要权限。
-- 如果你更想用 GitHub Actions，可自行重新创建 `.github/workflows/deploy.yml`，并在 GitHub Secrets 中配置 `CF_API_TOKEN`（权限 `Workers:Edit`）和 `CF_ACCOUNT_ID`。
-
 ### 从旧版迁移到本 Vite 构建
 
 旧站是「单文件内联 CSS/JS」的静态托管；新架构必须托管构建产物 `dist/`（由 Worker 完成）。迁移要点：
