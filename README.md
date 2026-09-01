@@ -100,7 +100,9 @@ npm run deploy             # = npm run build && wrangler deploy
 
 ```bash
 curl -sI https://vibecoding.kevinlidk.cn/                # 期望 Cache-Control: no-cache
-curl -sI https://vibecoding.kevinlidk.cn/assets/index.BXTP7vPp.js  # 期望 Cache-Control: public, max-age=31536000, immutable
+# 资源文件名带内容哈希，每次构建都会变；用下面命令自动取当前实际文件名再验证
+ASSET=$(curl -s https://vibecoding.kevinlidk.cn/ | grep -oE 'assets/index\.[A-Za-z0-9_]+\.js' | head -1)
+curl -sI "https://vibecoding.kevinlidk.cn/$ASSET"      # 期望 Cache-Control: public, max-age=31536000, immutable
 ```
 
 若 `index.html` 仍返回 `max-age=0` 或页面仍是内联样式，说明流量还没走到新 Worker，请检查 Custom Domain 绑定与 DNS。
