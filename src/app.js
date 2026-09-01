@@ -1706,6 +1706,8 @@
     items.forEach(appendCard);
   }
 
+  var groupInner = $("div", { class: "cat-inner" });
+  var group = $("div", { class: "cat-group" }, [groupInner]);
   CATS.forEach(function (pair) {
     var b = $("button", { class: "cat" + (pair[0] === "all" ? " active" : ""), type: "button" }, [
       icon(pair[3], 16),
@@ -1715,9 +1717,26 @@
         $("span", { class: "cat-zh" }, pair[2])
       ])
     ]);
-    b.onclick = function () { cat = pair[0]; [].forEach.call(catsEl.querySelectorAll(".cat"), function (x) { x.classList.toggle("active", x === b); }); render(); };
-    catsEl.append(b);
+    if (pair[0] === "all") {
+      b.classList.add("cat-toggle");
+      var chev = icon("chevD", 14);
+      chev.classList.add("cat-chev");
+      b.append(chev);
+      b.setAttribute("aria-expanded", "true");
+      b.onclick = function () {
+        var collapsed = catsEl.classList.toggle("collapsed");
+        b.setAttribute("aria-expanded", String(!collapsed));
+        cat = "all";
+        [].forEach.call(catsEl.querySelectorAll(".cat"), function (x) { x.classList.toggle("active", x === b); });
+        render();
+      };
+      catsEl.append(b);
+    } else {
+      b.onclick = function () { cat = pair[0]; [].forEach.call(catsEl.querySelectorAll(".cat"), function (x) { x.classList.toggle("active", x === b); }); render(); };
+      groupInner.append(b);
+    }
   });
+  catsEl.append(group);
   document.getElementById("q").addEventListener("input", function (e) { q = e.target.value; render(); });
   render();
 })();
