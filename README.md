@@ -95,7 +95,9 @@ npm run deploy             # = npm run build && wrangler deploy
 仓库已包含 `.github/workflows/deploy.yml`：每次 push 到 `main` 会自动执行
 `npm ci → npm run build → wrangler deploy`，无需本地手动部署。
 
-你只需在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中添加两个 Repository Secret：
+> **注意**：如果你在 Cloudflare Workers 控制台里已经启用了 **Git integration**（把 GitHub 仓库直接连到 Workers，由 Cloudflare 监听 push 并自动构建部署），那确实不需要在 GitHub 仓库里配 Secrets，也不需要本 GitHub Actions 工作流。下面的 Secret 只针对「用 GitHub Actions 调用 wrangler 部署」这条路。
+
+如果你选择走 GitHub Actions，需在仓库 **Settings → Secrets and variables → Actions** 中添加两个 Repository Secret：
 
 - `CF_API_TOKEN`：Cloudflare API Token，权限需包含 `Workers:Edit`（自定义 token 时勾选 Account 下的 Workers 相关权限）。
 - `CF_ACCOUNT_ID`：Cloudflare 账户 ID（Dashboard 右下角获取）。
@@ -119,6 +121,7 @@ curl -sI https://vibecoding.kevinlidk.cn/assets/index.BXTP7vPp.js  # 期望 Cach
 
 ## 项目结构
 
+```text
 VibeCoding/
 ├── index.html          # 页面结构（入口，引用 /src/main.js）
 ├── package.json        # 依赖与脚本（dev / build / preview / deploy）
@@ -134,6 +137,7 @@ VibeCoding/
 │   └── app.js          # 全部交互逻辑（原内联脚本）
 ├── dist/               # 生产构建产物（npm run build 生成，已 gitignore）
 └── README.md           # 本文件
+```
 
 ## 许可证
 
