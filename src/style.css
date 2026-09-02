@@ -523,7 +523,7 @@
       font-size: 12px; font-weight: 600; cursor: pointer;
     }
     .intro-toggle:hover { color: var(--text); }
-    .intro-chev { transition: transform .18s ease; opacity: .8; }
+    .intro-chev { margin-left: auto; opacity: .7; flex: 0 0 auto; transition: transform .18s ease; }
     .intro-panel.collapsed .intro-chev { transform: rotate(-90deg); }
     .intro-body { display: flex; flex-direction: column; gap: 8px; }
     .intro-panel.collapsed .intro-body { display: none; }

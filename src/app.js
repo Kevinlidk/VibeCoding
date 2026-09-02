@@ -1719,8 +1719,7 @@
     items.forEach(appendCard);
   }
 
-  var groupInner = $("div", { class: "cat-inner" });
-  var group = $("div", { class: "cat-group" }, [groupInner]);
+  var group = $("div", { class: "cat-group" });
   CATS.forEach(function (pair) {
     var b = $("button", { class: "cat" + (pair[0] === "all" ? " active" : ""), type: "button" }, [
       icon(pair[3], 16),
@@ -1745,7 +1744,7 @@
       catsEl.append(b);
     } else {
       b.onclick = function () { cat = pair[0]; [].forEach.call(catsEl.querySelectorAll(".cat"), function (x) { x.classList.toggle("active", x === b); }); render(); };
-      groupInner.append(b);
+      group.append(b);
     }
   });
   catsEl.append(group);
