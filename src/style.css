@@ -515,6 +515,20 @@
     .cat-group { display: flex; flex-direction: column; gap: 8px; }
     .cats.collapsed .cat-group { display: none; }
 
+    /* 说明面板折叠块：与左侧分类折叠状态联动 */
+    .intro-panel { display: flex; flex-direction: column; gap: 6px; }
+    .intro-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0; background: transparent; border: 0; color: var(--accent);
+      font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .intro-toggle:hover { color: var(--text); }
+    .intro-chev { transition: transform .18s ease; opacity: .8; }
+    .intro-panel.collapsed .intro-chev { transform: rotate(-90deg); }
+    .intro-body { display: flex; flex-direction: column; gap: 8px; }
+    .intro-panel.collapsed .intro-body { display: none; }
+    .intro-title { user-select: none; }
+
     /* 返回顶部浮动按钮 */
     .to-top {
       position: fixed; right: 16px; bottom: 16px; z-index: 30;

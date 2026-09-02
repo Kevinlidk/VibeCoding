@@ -1651,6 +1651,8 @@
   var grid = document.getElementById("grid");
   var catsEl = document.getElementById("cats");
   var countEl = document.getElementById("count");
+  var introPanel = document.getElementById("introPanel");
+  var introToggle = document.getElementById("introToggle");
   var root = document.documentElement;
   var themeDark = document.getElementById("themeDark");
   var themeLight = document.getElementById("themeLight");
@@ -1666,6 +1668,17 @@
   applyTheme(localStorage.getItem("ui-dict-theme") || "dark");
   themeDark.onclick = function () { applyTheme("dark"); };
   themeLight.onclick = function () { applyTheme("light"); };
+
+  function setCollapsed(collapsed) {
+    catsEl.classList.toggle("collapsed", collapsed);
+    if (introPanel) introPanel.classList.toggle("collapsed", collapsed);
+    var allBtn = catsEl && catsEl.querySelector(".cat-toggle");
+    if (allBtn) allBtn.setAttribute("aria-expanded", String(!collapsed));
+    if (introToggle) introToggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+  if (introToggle) {
+    introToggle.onclick = function () { setCollapsed(!introPanel.classList.contains("collapsed")); };
+  }
 
   function visible() {
     var s = q.trim().toLowerCase();
@@ -1724,8 +1737,7 @@
       b.append(chev);
       b.setAttribute("aria-expanded", "true");
       b.onclick = function () {
-        var collapsed = catsEl.classList.toggle("collapsed");
-        b.setAttribute("aria-expanded", String(!collapsed));
+        setCollapsed(!catsEl.classList.contains("collapsed"));
         cat = "all";
         [].forEach.call(catsEl.querySelectorAll(".cat"), function (x) { x.classList.toggle("active", x === b); });
         render();
@@ -1737,6 +1749,9 @@
     }
   });
   catsEl.append(group);
+  if (window.matchMedia("(max-width: 860px)").matches) {
+    setCollapsed(true);
+  }
   document.getElementById("q").addEventListener("input", function (e) { q = e.target.value; render(); });
   render();
 })();
